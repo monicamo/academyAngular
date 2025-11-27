@@ -11,17 +11,37 @@ import { TasksService } from '../tasks.service';
   styleUrl: './new-task.component.css',
 })
 export class NewTaskComponent {
+  /**
+   * ID do usuário para o qual a nova tarefa será criada.
+   * Fornecido pelo componente pai via Signal.
+   */
   userId = input.required<string>();
-  close = output<void>();
-  // add = output<NewTaskData>();
 
+  /**
+   * Evento emitido quando o formulário deve ser fechado (cancelar ou salvar).
+   */
+  close = output<void>();
+
+  /**
+   * Signals que armazenam temporariamente os dados digitados no formulário.
+   * Mantêm o estado local deste componente.
+   */
   enteredTitle = signal('');
   enteredSummary = signal('');
   enteredDueDate = signal('');
 
+  /**
+   * Serviço responsável por adicionar tarefas ao armazenamento.
+   */
   private tasksService = inject(TasksService);
 
-  onSubmit() {
+  /**
+   * Manipula o envio do formulário.
+   * Constrói o objeto NewTaskData baseado nos Signals locais e
+   * chama o service para adicionar a nova tarefa.
+   * Em seguida, notifica o componente pai para fechar o formulário.
+   */
+  onSubmit(): void {
     const newTask: NewTaskData = {
       title: this.enteredTitle(),
       summary: this.enteredSummary(),
@@ -29,13 +49,13 @@ export class NewTaskComponent {
     };
 
     this.tasksService.addTask(newTask, this.userId());
-
-    // this.add.emit(newTask);
-
     this.close.emit();
   }
 
-  onCancel() {
+  /**
+   * Cancela o processo de criação e informa o componente pai para fechar o formulário.
+   */
+  onCancel(): void {
     this.close.emit();
   }
 }

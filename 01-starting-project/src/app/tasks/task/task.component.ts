@@ -12,13 +12,22 @@ import { TasksService } from '../tasks.service';
   styleUrl: './task.component.css',
 })
 export class TaskComponent {
+  /**
+   * Tarefa individual recebida do componente pai.
+   * Utiliza Signals, por isso é lida via this.task().
+   */
   task = input.required<Task>();
-  // complete = output<string>();
 
+  /**
+   * Serviço responsável por gerenciar e modificar as tarefas.
+   */
   private tasksService = inject(TasksService);
 
+  /**
+   * Marca a tarefa como concluída, removendo-a da lista.
+   * Aciona o método correspondente no TasksService.
+   */
   onCompleteTask() {
-    // this.complete.emit(this.task().id);
     this.tasksService.removeTask(this.task().id);
   }
 }
