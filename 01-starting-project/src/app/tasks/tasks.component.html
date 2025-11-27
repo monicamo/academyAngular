@@ -1,2 +1,31 @@
-<h2>{{ name() }}</h2>
+@if (isAddingTask) {
+<!-- <app-new-task
+  [userId]="userId()"
+  (add)="onAddTask($event)"
+  (cancel)="onCancelAddTask()"
+/> -->
 
+<app-new-task [userId]="userId()" (close)="onCloseAddTask()" />
+}
+
+<section id="tasks">
+  <header>
+    <h2>{{ name() }}</h2>
+    <menu>
+      <button (click)="onStartAddTask()">Add Task</button>
+    </menu>
+  </header>
+
+  <ul>
+    @for (task of selectedUserTasks; track task.id) {
+    <li>
+      <!-- <app-task
+        (complete)="onCompleteTask($event)"
+        [task]="task"
+        description="Finish Angular course"
+      /> -->
+      <app-task [task]="task" description="Finish Angular course" />
+    </li>
+    }
+  </ul>
+</section>
